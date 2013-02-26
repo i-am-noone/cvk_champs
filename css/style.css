@@ -184,6 +184,8 @@ border:1px solid #000000;
 }
 .signUp{
 display: none;
+float:left;
+margin: 30px 0 0 0;
 }
 
 .competition{

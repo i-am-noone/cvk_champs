@@ -18,8 +18,7 @@
                     }
                 ?>
             </div>
-            <?php echo $userAccess === 'user' ? loginBooking($run['ruID'],$_SESSION['id'],$dbCon) : "<a href=\"javascript:void(0);\">login to book</a>"; ?>
-           
+            <?php echo $userAccess === 'user' ? loginBooking($run['ruID'],$_SESSION['id'],$dbCon) : "<a class=\"loginToBook\" href=\"javascript:void(0);\">login to book</a>"; ?>           
             <div class="competition_box">
                 <div class="competition_headline"><h3>Top 3</h3></div><img src="img/headline2.png" />            
             </div>        
