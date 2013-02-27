@@ -23,9 +23,26 @@
         $query .="
                 )
         ";
-        echo $query;
         $dbCon->query($query);
     }
+    function update($table,$update,$id,$dbCon){
+        $query = "
+            UPDATE $table
+            SET
+        ";
+        $firstArray = 1;
+        foreach ($update as $column => $value){
+            $query .= $firstArray == 1?"":",";
+            $query .= "{$column} = '{$value}'";
+        }
+        $query .= "
+            
+            WHERE userID = $id[userID]
+                AND runID = $id[runID]        
+        ";
+        $dbCon->query($query);
+    }
+    
 	function getUsersName($rcUsers,$id,$dbCon){
 		$query = "
 			SELECT
@@ -49,8 +66,8 @@
             echo "<option value=\"{$route->id}\">{$route->name}/{$route->distance}km</option>";
         }        
     }
-    function getRunInformation($rcChamps,$rcUsers,$rcRuns,$rcRoutes,$andWhere,$dbCon){
-          echo $query = "
+    function getRunInformation($rcChamps,$rcUsers,$rcRuns,$rcRoutes,$runID,$dbCon){
+        $query = "
             SELECT 
                 ru.id AS ruID,
                 ru.name AS ruN,
@@ -68,7 +85,12 @@
                 u.id AS uID,
                 u.name AS uN,
                 u.gender AS uG,
-                u.birthDate AS uBD
+                COUNT(u.gender) AS uGCount,
+                SUM(IF(u.gender = 'male',1,0)) AS uMale,
+                SUM(IF(u.gender = 'female',1,0)) AS uFemale,
+                u.birthDate AS uBD,
+                MIN(u.birthDate) AS uMinBD,
+                MAX(u.birthDate) AS uMaxBD
             FROM 
                 $rcRuns AS ru
             INNER JOIN
@@ -84,12 +106,30 @@
                     ON
                         u.id = c.userID
             WHERE 
-                ru.startDate > UNIX_TIMESTAMP()
-                    $andWhere                    
+                ru.id = $runID                    
         ";
         $set = $dbCon->query($query);
         return $set;
     }
+    function getParticipations($rcChamps,$rcUsers,$runID,$dbCon){
+    	$query = "
+            SELECT 
+                c.userID AS uID,
+                c.runID AS ruID,
+                u.userName AS uUN
+            FROM
+                $rcChamps AS c
+            INNER JOIN
+                $rcUsers AS u
+                    ON 
+                        u.id = c.userID
+            WHERE
+                c.record = 0                
+        ";
+        $set = $dbCon->query($query);
+        return $set;
+    }
+    
     function getRuns($rcRuns,$rcRoutes,$dbCon){
         $query = "
             SELECT 
@@ -111,7 +151,8 @@
                     ON
                         ru.routeID = ro.id
             WHERE 
-                ru.startDate > UNIX_TIMESTAMP()                       
+                ru.startDate > UNIX_TIMESTAMP()
+            ORDER BY ru.startDate ASC
         ";
         $set = $dbCon->query($query);
         return $set;
@@ -175,35 +216,24 @@
         }
     }
     function loginBooking($runID,$userID,$dbCon){
-            $query = "
-                SELECT
-                    id
-                FROM
-                    rcChamps
-                WHERE
-                    runID = '$runID' AND userID = '$userID'
-            ";
-            $rowCount = $dbCon->query($query)->num_rows;
-            if($rowCount === 0){
-                echo "<form action=\"actions.php\" method=\"post\">";
-                echo "<input type=\"hidden\" name=\"bookRunID\" value=\"{$runID}\">";
-                echo "<input type=\"hidden\" name=\"bookUserID\" value=\"{$userID}\">";
-                echo "<input type=\"submit\" name=\"submitBook\" value=\"Book\">";
-                echo "</form>";
-                "<a href=\"javascript:void(0);\">login to book</a>";
-            }else{
-                echo "<p>you are booked for this run</p>";
-            }
+        $query = "
+            SELECT
+                id
+            FROM
+                rcChamps
+            WHERE
+                runID = '$runID' AND userID = '$userID'
+        ";
+        $rowCount = $dbCon->query($query)->num_rows;
+        if($rowCount === 0){
+            echo "<form action=\"actions.php\" method=\"post\">";
+            echo "<input type=\"hidden\" name=\"bookRunID\" value=\"{$runID}\">";
+            echo "<input type=\"hidden\" name=\"bookUserID\" value=\"{$userID}\">";
+            echo "<input type=\"submit\" name=\"submitBook\" value=\"Book\">";
+            echo "</form>";
+            "<a href=\"javascript:void(0);\">login to book</a>";
+        }else{
+            echo "<p>you are booked for this run</p>";
+        }
     }
 ?>
-
-
-
-
-
-
-
-
-
-
-

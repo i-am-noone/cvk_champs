@@ -72,6 +72,12 @@
         $table = "rcChamps";
         insert($table,$insert,$dbCon);
         $header = end(explode("/",$_SERVER['HTTP_REFERER']));
+    }elseif(isset($_POST['submitRecord'])){
+        $id['userID'] = $_POST['userID'];
+        $id['runID'] = $_POST['runID'];
+        $record['record'] = $_POST['userRecord'];
+        update($rcChamps,$record,$id,$dbCon);
+        $header = end(explode("/",$_SERVER['HTTP_REFERER']));
     }
     header("location:{$header}");
 ?>
