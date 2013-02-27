@@ -5,7 +5,7 @@
     }
     $dbCon->set_charset('utf8');
     $rcRuns = "rcRuns";
-    $rcChamp = "rcChamp";
+    $rcChamps = "rcChamps";
     $rcRoutes = "rcRoutes";
     $rcUsers = "rcUsers";
 ?>

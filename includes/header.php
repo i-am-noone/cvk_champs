@@ -12,8 +12,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <link href="css/style.css" rel="stylesheet" type="text/css"/>
-        <script src="js/modernizr.js"></script>
-        
+        <script src="js/modernizr.js"></script>        
         <link rel="stylesheet" href="css/nivo-slider.css" type="text/css" media="screen" />
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <script src="js/jquery.nivo.slider.pack.js" type="text/javascript"></script>
@@ -68,7 +67,9 @@
                         <form action="actions.php" method="post">
                             <labe>Full Name</label>
                             <input type="text" name="signUpName">
+                            <label>Username</label>
                             <input type="text" name="signUpUserName">
+                            <label>Password</label>
                             <input type="password" name="signUpPassword">
                             <label>Male</lable>
                             <input type="radio" name="signUpGender" value="male">
@@ -86,10 +87,13 @@
                                 <option>Year</option>
                                 <?php dropDownDate("signUpYear"); ?>
                             </select>
+                            <label>Address</label>
                             <input type="text" name="signUpAddress">
+                            <label>E-mail</label>
                             <input type="text" name="signUpEmail">
+                            <label>Phone</label>
                             <input type="text" name="signUpPhone">
-                            <input type="submit" name="signUpSubmit" value="Singup">
+                            <input type="submit" name="signUpSubmit" value="Done">
                         </form>
                     </div>
                     </div>

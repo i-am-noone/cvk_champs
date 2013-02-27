@@ -26,11 +26,11 @@
                 $_SESSION['user'] = true;
 				$_SESSION['id'] = $id;
             }
-            $header = "index.php?menu=1";
+            $header = end(explode("/",$_SERVER['HTTP_REFERER']));
         }
     }elseif(isset($_GET['logout'])){
 		session_destroy();
-		$header = "index.php?menu=1";
+		$header = end(explode("/",$_SERVER['HTTP_REFERER']));
 	}elseif(isset($_POST['signUpSubmit'])){
         $day = trim($_POST['birthDay']);
         $month = trim($_POST['birthMonth']);
@@ -45,7 +45,7 @@
         $insert['phone'] = trim($_POST['signUpPhone']);
         $table = "rcUsers";
         insert($table,$insert,$dbCon);
-        //$header = "index.php?menu=1";
+        $header = end(explode("/",$_SERVER['HTTP_REFERER']));
     }elseif(isset($_POST['routeSubmit'])){
         $insert['name'] = $dbCon->real_escape_string($_POST['routeName']);
         $insert['distance'] = $dbCon->real_escape_string($_POST['routeDistance']);
@@ -71,8 +71,7 @@
         $insert['runID'] = $dbCon->real_escape_string($_POST['bookRunID']);
         $table = "rcChamps";
         insert($table,$insert,$dbCon);
-        //$header = 
+        $header = end(explode("/",$_SERVER['HTTP_REFERER']));
     }
-    
     header("location:{$header}");
 ?>

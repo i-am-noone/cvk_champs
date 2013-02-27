@@ -49,8 +49,75 @@
             echo "<option value=\"{$route->id}\">{$route->name}/{$route->distance}km</option>";
         }        
     }
+    function getRunInformation($rcChamps,$rcUsers,$rcRuns,$rcRoutes,$andWhere,$dbCon){
+          echo $query = "
+            SELECT 
+                ru.id AS ruID,
+                ru.name AS ruN,
+                ru.price AS ruP,
+                ru.description AS ruD,
+                ru.startDate AS ruST,
+                ro.id AS roID,
+                ro.name AS roN,
+                ro.googleMap AS roGM,
+                ro.description AS roDe,
+                ro.distance AS roDi,
+                ro.bestTime AS roBT,
+                c.id AS cID,
+                c.record,
+                u.id AS uID,
+                u.name AS uN,
+                u.gender AS uG,
+                u.birthDate AS uBD
+            FROM 
+                $rcRuns AS ru
+            INNER JOIN
+                $rcRoutes AS ro
+                    ON
+                        ru.routeID = ro.id
+            INNER JOIN
+                $rcChamps AS c 
+                    ON
+                        c.runID = ru.ID
+            INNER JOIN 
+                $rcUsers AS u
+                    ON
+                        u.id = c.userID
+            WHERE 
+                ru.startDate > UNIX_TIMESTAMP()
+                    $andWhere                    
+        ";
+        $set = $dbCon->query($query);
+        return $set;
+    }
+    function getRuns($rcRuns,$rcRoutes,$dbCon){
+        $query = "
+            SELECT 
+                ru.id AS ruID,
+                ru.name AS ruN,
+                ru.price AS ruP,
+                ru.description AS ruD,
+                ru.startDate AS ruST,
+                ro.id AS roID,
+                ro.name AS roN,
+                ro.googleMap AS roGM,
+                ro.description AS roDe,
+                ro.distance AS roDi,
+                ro.bestTime AS roBT
+            FROM 
+                $rcRuns AS ru
+            INNER JOIN
+                $rcRoutes AS ro
+                    ON
+                        ru.routeID = ro.id
+            WHERE 
+                ru.startDate > UNIX_TIMESTAMP()                       
+        ";
+        $set = $dbCon->query($query);
+        return $set;
+    }
     function getLatestEvent($rcRuns,$rcRoutes,$dbCon){
-		$query = "
+        $query = "
             SELECT 
                 ru.id AS ruID,
                 ru.name AS ruN,
@@ -88,7 +155,7 @@
             "roBT" => $set->roBT
         );
         return $run;
-	}
+    }
     function dropDownDate($date){
         if($date == "signUpDay" || $date == "addRunDay"){
             $startDate = 1;
