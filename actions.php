@@ -75,8 +75,27 @@
     }elseif(isset($_POST['submitRecord'])){
         $id['userID'] = $_POST['userID'];
         $id['runID'] = $_POST['runID'];
-        $record['record'] = $_POST['userRecord'];
-        update($rcChamps,$record,$id,$dbCon);
+        $id['routeID'] = $_POST['routeID'];
+        $update['record'] = strtotime($_POST['userRecord'])-strtotime('TODAY');
+        $query = "
+            SELECT
+                bestTime
+            FROM 
+                $rcRoutes
+            WHERE
+                id = $id[routeID]
+        ";
+       $routeBestTime = $dbCon->query($query)->fetch_object()->bestTime;
+       if($update['record'] <= $routeBestTime  || $routeBestTime == 0){
+            $bt['bestTime'] = $update['record'];
+            $where = " WHERE id = $id[routeID] ";
+            update($rcRoutes,$bt,$where,$dbCon);
+        }
+        $where = "
+            WHERE userID = $id[userID]
+                AND runID = $id[runID]   
+        ";
+        update($rcChamps,$update,$where,$dbCon);
         $header = end(explode("/",$_SERVER['HTTP_REFERER']));
     }
     header("location:{$header}");

@@ -35,7 +35,7 @@
                     <ul>
                         <li><a href="index.php?menu=1">Home</a></li>
                         <li><a href="results.php?menu=2">Results</a></li>
-                        <li><a href="booking.php?menu=3">Booking</a></li>
+                        <li><a href="runs.php?menu=3">Runs</a></li>
                         <li><a href="contact.php?menu=4">Contact</a></li>
                         <?php echo $userAccess === "admin" ? "<li><a href=\"backend.php?menu=5\">backend</a></li>" : "" ?>
                     </ul>

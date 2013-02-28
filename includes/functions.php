@@ -25,7 +25,7 @@
         ";
         $dbCon->query($query);
     }
-    function update($table,$update,$id,$dbCon){
+    function update($table,$update,$where,$dbCon){
         $query = "
             UPDATE $table
             SET
@@ -34,12 +34,12 @@
         foreach ($update as $column => $value){
             $query .= $firstArray == 1?"":",";
             $query .= "{$column} = '{$value}'";
+            $firstArray++;
         }
         $query .= "
-            
-            WHERE userID = $id[userID]
-                AND runID = $id[runID]        
+            $where        
         ";
+        //echo $query;
         $dbCon->query($query);
     }
     
@@ -111,11 +111,12 @@
         $set = $dbCon->query($query);
         return $set;
     }
-    function getParticipations($rcChamps,$rcUsers,$runID,$dbCon){
+    function getParticipations($rcChamps,$rcUsers,$runID,$oprator,$dbCon){
     	$query = "
             SELECT 
                 c.userID AS uID,
                 c.runID AS ruID,
+                c.record AS cR,
                 u.userName AS uUN
             FROM
                 $rcChamps AS c
@@ -124,7 +125,10 @@
                     ON 
                         u.id = c.userID
             WHERE
-                c.record = 0                
+                c.record $oprator 0
+                    AND c.runID = $runID
+            ORDER BY record ASC
+                    
         ";
         $set = $dbCon->query($query);
         return $set;
@@ -192,8 +196,8 @@
             "roID" => $set->roID,
             "roN" => $set->roN,
             "roDe" => $set->roDe,
-            "roDi" => $set->roDi,
-            "roBT" => $set->roBT
+            "roDi" => $set->roDi . " km.",
+            "roBT" => gmdate('h:i:s',$set->roBT)
         );
         return $run;
     }
@@ -236,4 +240,53 @@
             echo "<p>you are booked for this run</p>";
         }
     }
+    function getRunResults($rcRuns,$rcRoutes,$dbCon){
+        $query = "
+            SELECT 
+                ru.id AS ruID,
+                ru.name AS ruN,
+                ru.startDate AS ruST,
+                ro.id AS roID,
+                ro.name AS roN,
+                ro.googleMap AS roGM,
+                ro.distance AS roDi
+            FROM 
+                $rcRuns AS ru
+            INNER JOIN
+                $rcRoutes AS ro
+                    ON
+                        ru.routeID = ro.id
+            ORDER BY ru.startDate ASC
+        ";
+        $set = $dbCon->query($query);
+        return $set;
+    }
+    function getTop3($rcUsers,$rcChamps,$rcRuns,$dbCon){
+        $query = "
+            SELECT 
+                u.name AS name,
+                u.id,
+                c.runID,
+                c.userID,
+                c.record AS record,
+                ru.startDate
+            FROM
+                $rcUsers AS u
+            INNER JOIN
+                $rcChamps AS c
+                    ON
+                        c.userID = u.id
+            INNER JOIN
+                $rcRuns AS ru
+                    ON
+                        ru.id = c.runID
+            WHERE
+                ru.startDate < UNIX_TIMESTAMP()
+            ORDER BY ru.startDate ASC
+            LiMIT 3           
+        ";
+        $set = $dbCon->query($query);
+        return $set;
+    }
+    
 ?>
