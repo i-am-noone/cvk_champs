@@ -1,21 +1,6 @@
 <?php include('includes/header.php'); ?>
     <section>
         <form action="actions.php" method="post">
-            <select name="hour">
-                <option>Hour</option>
-                <?php for($i=1; $i<6; $i++){ echo "<option value\"{$i}>{$i}</option>"; } ?>
-            </select>
-            <select name="minute">
-                <option>Minute</option>
-                <?php for($i=0; $i<60; $i++){ echo "<option value\"{$i}>{$i}</option>"; } ?>
-            </select>
-            <select name="second">
-                <option>second</option>
-                <?php for($i=0; $i<60; $i++){ echo "<option value\"{$i}>{$i}</option>"; } ?>
-            </select>
-            <input type="submit" name"registerRecord" value="Register">
-        </form>
-        <form action="actions.php" method="post">
             <label>Name</label>
             <input type="text" name="routeName">
             <label>Distance</label>
