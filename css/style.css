@@ -6,6 +6,7 @@ list-style: none;
 
 body{
 background-color:#1a1a1a;
+color: #ffffff;
 }
 
 input, label{
@@ -93,7 +94,7 @@ color:#000000;
 }
 
 nav img{
-margin-top:120px;
+margin-top:150px;
 }
 
 section{

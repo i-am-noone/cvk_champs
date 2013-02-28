@@ -1,12 +1,7 @@
 <?php include('includes/header.php'); ?>
     <section>
         <form action="actions.php" method="post">
-            <label>Username</label>
-            <input type="text" name="usernameRecord">
             <select name="hour">
-                <select name="registerRun">
-                
-                </select>
                 <option>Hour</option>
                 <?php for($i=1; $i<6; $i++){ echo "<option value\"{$i}>{$i}</option>"; } ?>
             </select>
