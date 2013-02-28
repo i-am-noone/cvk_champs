@@ -256,6 +256,8 @@
                 $rcRoutes AS ro
                     ON
                         ru.routeID = ro.id
+             WHERE
+                ru.startDate < UNIX_TIMESTAMP()
             ORDER BY ru.startDate ASC
         ";
         $set = $dbCon->query($query);
