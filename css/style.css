@@ -6,7 +6,7 @@ list-style: none;
 
 body{
 background-color:#1a1a1a;
-color: #ffffff;
+color:#ffffff;
 }
 
 input, label{
@@ -60,7 +60,7 @@ margin-top:30px;
 
 aside{
 float: left;
-width: 23%;
+width: 20%;
 }
 
 
@@ -94,11 +94,11 @@ color:#000000;
 }
 
 nav img{
-margin-top:150px;
+margin-top:130px;
 }
 
 section{
-    width: 77%;
+    width: 80%;
     float: left;
 }
 
@@ -131,7 +131,7 @@ border:1px solid red;
 .login{
 background-color:#1d1d1d;
 width:231px;
-min-height:695px;
+min-height:580px;
 font-family: tahoma;
 color:#ffffff;
 float:left;
